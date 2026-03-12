@@ -803,6 +803,13 @@
                             </tr>
                         </tbody>
                     </table>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <h4 style="font-size: 0.875rem; color: var(--text); margin-bottom: 0.75rem; font-weight: 600;">Logos Disponibles</h4>
+                        <div id="logo-gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+                            <p style="color: var(--text-light); font-size: 0.875rem;">Carga archivos SVG en la carpeta <code>AX_Logos/</code> para mostrarlos aquí.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1159,6 +1166,41 @@
                 card.classList.toggle('open');
             });
         });
+
+        async function loadLogos() {
+            const logoFiles = [
+                'logo-vertical.svg',
+                'logo-horizontal.svg',
+                'logo-blanco.svg',
+                'logo-azul.svg'
+            ];
+            
+            const gallery = document.getElementById('logo-gallery');
+            if (!gallery) return;
+            
+            let html = '';
+            
+            for (const file of logoFiles) {
+                try {
+                    const response = await fetch('AX_Logos/' + file);
+                    if (response.ok) {
+                        const svgContent = await response.text();
+                        html += `<div style="background: #fff; border: 1px solid #D3DCDF; border-radius: 8px; padding: 1rem; text-align: center;">
+                            <div style="max-width: 150px; margin: 0 auto;">${svgContent}</div>
+                            <span style="font-size: 0.75rem; color: #717374; margin-top: 0.5rem; display: block;">${file}</span>
+                        </div>`;
+                    }
+                } catch (e) {
+                    // File not found, skip
+                }
+            }
+            
+            if (html) {
+                gallery.innerHTML = html;
+            }
+        }
+        
+        loadLogos();
     </script>
 </body>
 </html>
