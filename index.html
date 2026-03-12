@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Diseño Asimetrix</title>
+    <style>
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('AX_Tipografía/SF-Pro-Display-Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('AX_Tipografía/SF-Pro-Display-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('AX_Tipografía/SF-Pro-Display-Semibold.otf') format('opentype');
+            font-weight: 600;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('AX_Tipografía/SF-Pro-Display-Bold.otf') format('opentype');
+            font-weight: 700;
+            font-style: normal;
+        }
+        
+        :root {
+            --primary: #0E567B;
+            --primary-dark: #050B49;
+            --primary-light: #90C0E7;
+            --accent: #4BA2FF;
+            --accent-aqua: #00E3FF;
+            --accent-aqua-gray: #7EC6DE;
+            --text: #050B49;
+            --text-light: #4A4A68;
+            --text-inverse: #FFFFFF;
+            --bg: #FFFFFF;
+            --bg-alt: #F8F9FA;
+            --bg-neutral: #E6E6E6;
+            --border: #D3DCDF;
+            --success: #4BA2FF;
+            --error: #C0062B;
+            --warning: #FFD600;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.375;
+            letter-spacing: -0.3px;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+        }
+
+        h1 { font-size: 40px; line-height: 40px; }
+        h2 { font-size: 32px; line-height: 32px; }
+        h3 { font-size: 28px; line-height: 30px; }
+        h4 { font-size: 24px; line-height: 26px; letter-spacing: -0.45px; }
+        h5 { font-size: 20px; line-height: 24px; letter-spacing: -0.38px; }
+        h6 { font-size: 18px; line-height: 23px; letter-spacing: -0.3px; }
+
+        .small { font-size: 14px; line-height: 18px; letter-spacing: -0.2px; }
+        .small-semibold { font-size: 14px; font-weight: 600; line-height: 18px; letter-spacing: -0.2px; }
+        .small-bold { font-size: 14px; font-weight: 700; line-height: 18px; letter-spacing: -0.2px; }
+        .xsmall { font-size: 12px; line-height: 16px; letter-spacing: -0.17px; }
+        .xsmall-semibold { font-size: 12px; font-weight: 600; line-height: 16px; letter-spacing: -0.17px; }
+        .xsmall-bold { font-size: 12px; font-weight: 700; line-height: 16px; letter-spacing: -0.17px; }
+
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .header span {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .nav {
+            position: fixed;
+            left: 0;
+            top: 60px;
+            bottom: 0;
+            width: 280px;
+            background: var(--bg-alt);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            font-size: 0.9375rem;
+            color: var(--text-light);
+        }
+
+        .nav-item:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+            border-left: 3px solid var(--accent);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .nav-item .arrow {
+            transition: transform 0.2s;
+        }
+
+        .nav-item.active .arrow {
+            transform: rotate(90deg);
+        }
+
+        .main {
+            margin-left: 280px;
+            margin-top: 60px;
+            padding: 2rem;
+            min-height: calc(100vh - 60px);
+        }
+
+        .section {
+            display: none;
+            max-width: 900px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+        }
+
+        .section-header p {
+            color: var(--text-light);
+            font-size: 1.0625rem;
+        }
+
+        .card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-alt);
+            transition: background 0.2s;
+        }
+
+        .card-header:hover {
+            background: var(--border);
+        }
+
+        .card-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .card-header .icon {
+            transition: transform 0.2s;
+        }
+
+        .card.open .card-header .icon {
+            transform: rotate(180deg);
+        }
+
+        .card-content {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card.open .card-content {
+            padding: 1.5rem;
+            max-height: 1000px;
+        }
+
+        .principle-card {
+            padding: 1rem;
+            background: var(--bg-alt);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .principle-card h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .principle-card p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-alt);
+            font-weight: 600;
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+        }
+
+        td {
+            font-family: 'SF Mono', 'Roboto Mono', monospace;
+            font-size: 0.8125rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .tag.prohibited {
+            background: var(--error);
+        }
+
+        .tag.allowed {
+            background: var(--success);
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--bg-alt);
+            color: var(--text-light);
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .color-swatch {
+            border-radius: 8px;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            min-height: 100px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .color-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .color-hex {
+            font-size: 0.75rem;
+            font-family: 'SF Mono', 'Roboto Mono', monospace;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .gradient-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .gradient-swatch {
+            border-radius: 8px;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            min-height: 80px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .gradient-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .version {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--text);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+            .main {
+                margin-left: 0;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Sistema de Diseño Asimetrix</h1>
+        <span>V.01 - 2025</span>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-item active" data-section="introduccion">
+            Introducción
+            <span class="arrow">›</span>
+        </div>
+        <div class="nav-item" data-section="principios">
+            Principios de Diseño
+            <span class="arrow">›</span>
+        </div>
+        <div class="nav-item" data-section="tipografia">
+            Tipografía
+            <span class="arrow">›</span>
+        </div>
+        <div class="nav-item" data-section="logo">
+            Logo
+            <span class="arrow">›</span>
+        </div>
+        <div class="nav-item" data-section="iconografia">
+            Iconografía
+            <span class="arrow">›</span>
+        </div>
+        <div class="nav-item" data-section="colores">
+            Colores
+            <span class="arrow">›</span>
+        </div>
+        <div class="nav-item" data-section="componentes">
+            Componentes
+            <span class="arrow">›</span>
+        </div>
+    </nav>
+
+    <main class="main">
+        <!-- Introducción -->
+        <section id="introduccion" class="section active">
+            <div class="section-header">
+                <h2>Introducción</h2>
+                <p>El núcleo visual y funcional que unifica la experiencia de usuario en todos nuestros productos.</p>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>¿Para qué sirve?</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li>Garantizar consistencia visual entre todos los puntos de contacto digitales.</li>
+                        <li>Acelerar el desarrollo y diseño, reutilizando piezas validadas.</li>
+                        <li>Reducir errores de implementación entre diseño y código.</li>
+                        <li>Comunicar una marca sólida, confiable y profesional.</li>
+                        <li>Fomentar colaboración fluida entre diseñadores, desarrolladores y equipos de producto.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>¿Qué incluye el sistema?</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <div class="grid-2">
+                        <div>
+                            <span class="badge">Paleta de colores</span>
+                            <span class="badge">Modo claro/oscuro</span>
+                            <span class="badge">Tipografía</span>
+                            <span class="badge">Estilos de texto</span>
+                        </div>
+                        <div>
+                            <span class="badge">Espaciado</span>
+                            <span class="badge">Grillas responsivas</span>
+                            <span class="badge">Botones</span>
+                            <span class="badge">Formularios</span>
+                        </div>
+                        <div>
+                            <span class="badge">Tarjetas</span>
+                            <span class="badge">Modales</span>
+                            <span class="badge">Íconos</span>
+                            <span class="badge">Dashboards</span>
+                        </div>
+                        <div>
+                            <span class="badge">Flujos de usuario</span>
+                            <span class="badge">Tokens de diseño</span>
+                            <span class="badge">Exportables</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Principios -->
+        <section id="principios" class="section">
+            <div class="section-header">
+                <h2>Principios de Diseño</h2>
+                <p>Los principios de diseño que nos unen.</p>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Todos los principios</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <div class="principle-card">
+                        <h4>Colaboración</h4>
+                        <p>Fomentamos el trabajo en equipo. La interfaz promueve la circulación fluida de datos, la toma de decisiones conjunta y la visibilidad compartida entre roles.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Nativo y Consistente</h4>
+                        <p>Usamos un lenguaje visual propio y coherente. Cada componente pertenece al ecosistema Asimetrix, evitando mezclar estilos externos.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Simplicidad</h4>
+                        <p>La aplicación se enfoca en escenarios clave y funcionalidades esenciales. No recarga al usuario; prioriza eficiencia sobre complejidad.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Útil</h4>
+                        <p>Cada funcionalidad parte de necesidades concretas. El diseño evita lo superfluo y se enfoca en automatizar y simplificar tareas repetitivas.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Intuitiva</h4>
+                        <p>La interfaz es clara desde el primer uso. Usa un lenguaje visual limpio, organizado y enfocado en la productividad.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Accesible</h4>
+                        <p>Todo usuario debe poder usar la app. Usamos bien los contrastes, pensamos en navegación con teclado y escribimos textos comprensibles.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Flexible y Responsivo</h4>
+                        <p>El sistema se adapta a distintas condiciones: escritorio o móvil, en laboratorio o en el campo.</p>
+                    </div>
+                    <div class="principle-card">
+                        <h4>Clara en su Propósito</h4>
+                        <p>Cada pantalla comunica su función. Se minimiza la ambigüedad con textos directos y jerarquía visual clara.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tipografía -->
+        <section id="tipografia" class="section">
+            <div class="section-header">
+                <h2>Tipografía</h2>
+                <p>Uno de los pilares fundamentales de comunicación visual.</p>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Fuentes</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fuente</th>
+                                <th>Uso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>SF Pro Display</strong></td>
+                                <td>Fuente oficial - usar siempre que esté disponible</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Roboto</strong></td>
+                                <td>Fuente secundaria para textos menores a 18px</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Helvetica</strong></td>
+                                <td>Solo cuando ninguna de las anteriores esté disponible</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Jerarquía - Headings</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Elemento</th>
+                                <th>Tamaño</th>
+                                <th>Peso</th>
+                                <th>Line-height</th>
+                                <th>Spacing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>H1</td><td>40px</td><td>Bold (700)</td><td>40px</td><td>-0.6</td></tr>
+                            <tr><td>H2</td><td>32px</td><td>Bold (700)</td><td>32px</td><td>-0.6</td></tr>
+                            <tr><td>H3</td><td>28px</td><td>Bold (700)</td><td>30px</td><td>-0.6</td></tr>
+                            <tr><td>H4</td><td>24px</td><td>Bold (700)</td><td>26px</td><td>-0.45</td></tr>
+                            <tr><td>H5</td><td>20px</td><td>Bold (700)</td><td>24px</td><td>-0.38</td></tr>
+                            <tr><td>H6</td><td>18px</td><td>Bold (700)</td><td>23px</td><td>-0.3</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Jerarquía - Body Text</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Elemento</th>
+                                <th>Tamaño</th>
+                                <th>Peso</th>
+                                <th>Line-height</th>
+                                <th>Spacing</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Body</td><td>16px</td><td>Regular (400)</td><td>22px</td><td>-0.3</td></tr>
+                            <tr><td>Small</td><td>14px</td><td>Regular (400)</td><td>18px</td><td>-0.2</td></tr>
+                            <tr><td>Small SemiBold</td><td>14px</td><td>SemiBold (600)</td><td>18px</td><td>-0.2</td></tr>
+                            <tr><td>Small Bold</td><td>14px</td><td>Bold (600)</td><td>18px</td><td>-0.2</td></tr>
+                            <tr><td>XSmall</td><td>12px</td><td>Regular (400)</td><td>16px</td><td>-0.17</td></tr>
+                            <tr><td>XSmall SemiBold</td><td>12px</td><td>SemiBold (600)</td><td>16px</td><td>-0.17</td></tr>
+                            <tr><td>XSmall Bold</td><td>12px</td><td>Bold (600)</td><td>16px</td><td>-0.17</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Guidelines de uso</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li>La longitud de la línea debe ser menor a 60 caracteres</li>
+                        <li>El contraste entre fondo y texto debe cumplir estándares de accesibilidad</li>
+                        <li>Usar alineación a la izquierda para texto digital</li>
+                        <li>El texto centrado se recomienda solo para Display headings</li>
+                        <li>Line spacing sigue una grilla de 4px</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Ejemplos de Uso - Tarjetas de Especificación</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <p style="margin-bottom: 1rem; color: var(--text-light);">Los siguientes ejemplos muestran las combinaciones recomendadas de tipografía según el contexto de uso:</p>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="font-size: 0.875rem; color: var(--text-light); margin-bottom: 0.5rem;">SF Pro Display - Fondos Claros</h4>
+                        <div style="background: #F5F4F5; border-radius: 8px; padding: 1.5rem; margin-bottom: 0.5rem;">
+                            <span style="color: #181934; font-family: 'SF Pro Display', sans-serif; font-size: 32px; font-weight: 700;">Heading Large</span>
+                            <span style="color: #181934; font-family: 'SF Pro Display', sans-serif; font-size: 24px; font-weight: 600; display: block; margin-top: 0.5rem;">Heading Medium</span>
+                            <span style="color: #717374; font-family: 'SF Pro Display', sans-serif; font-size: 16px; font-weight: 400; display: block; margin-top: 0.5rem;">Texto secundario en gris</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="font-size: 0.875rem; color: var(--text-light); margin-bottom: 0.5rem;">SF Pro Display - Fondos Oscuros</h4>
+                        <div style="background: #181934; border-radius: 8px; padding: 1.5rem;">
+                            <span style="color: #F5F4F5; font-family: 'SF Pro Display', sans-serif; font-size: 32px; font-weight: 700;">Heading Large</span>
+                            <span style="color: #F5F4F5; font-family: 'SF Pro Display', sans-serif; font-size: 24px; font-weight: 600; display: block; margin-top: 0.5rem;">Heading Medium</span>
+                            <span style="color: #717374; font-family: 'SF Pro Display', sans-serif; font-size: 16px; font-weight: 400; display: block; margin-top: 0.5rem;">Texto secundario</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="font-size: 0.875rem; color: var(--text-light); margin-bottom: 0.5rem;">Roboto - Textos de Cuerpo</h4>
+                        <div style="background: #FFFFFF; border: 1px solid #D3DCDF; border-radius: 8px; padding: 1.5rem;">
+                            <p style="font-family: 'Roboto', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.5; color: #181934; margin-bottom: 0.5rem;">
+                                Texto de cuerpo en Roboto. Recomendado para tamaños menores a 18px donde la legibilidad es clave.
+                            </p>
+                            <p style="font-family: 'Roboto', sans-serif; font-size: 14px; font-weight: 400; line-height: 1.4; color: #717374;">
+                                Texto pequeño (Small). Utilizado para descripciones secundarias y metadatos.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 style="font-size: 0.875rem; color: var(--text-light); margin-bottom: 0.5rem;">Combinaciones Recomendadas</h4>
+                        <table style="font-size: 0.8125rem;">
+                            <thead>
+                                <tr>
+                                    <th>Contexto</th>
+                                    <th>Fuente Principal</th>
+                                    <th>Fuente Secundaria</th>
+                                    <th>Color Texto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Títulos (H1-H3)</td>
+                                    <td>SF Pro Display Bold</td>
+                                    <td>-</td>
+                                    <td>#181934</td>
+                                </tr>
+                                <tr>
+                                    <td>Subtítulos (H4-H6)</td>
+                                    <td>SF Pro Display SemiBold</td>
+                                    <td>-</td>
+                                    <td>#181934</td>
+                                </tr>
+                                <tr>
+                                    <td>Texto cuerpo</td>
+                                    <td>Roboto Regular</td>
+                                    <td>SF Pro Display</td>
+                                    <td>#181934</td>
+                                </tr>
+                                <tr>
+                                    <td>Texto secundario</td>
+                                    <td>Roboto Regular</td>
+                                    <td>SF Pro Display</td>
+                                    <td>#717374</td>
+                                </tr>
+                                <tr>
+                                    <td>Fondo oscuro</td>
+                                    <td>SF Pro Display</td>
+                                    <td>Roboto</td>
+                                    <td>#F5F4F5</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Descargar Tipografía</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <p style="margin-bottom: 1rem; color: var(--text-light);">Descarga todas las fuentes del sistema de diseño.</p>
+                    
+                    <a href="AX_Tipografia.zip" download style="display: inline-block; padding: 0.75rem 2rem; background: var(--primary); color: white; border-radius: 6px; text-decoration: none; font-size: 0.9375rem; font-weight: 500;">
+                        Descargar Tipografía
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logo -->
+        <section id="logo" class="section">
+            <div class="section-header">
+                <h2>Logo</h2>
+                <p>Lineamientos para el uso correcto de la marca y sus aplicaciones gráficas.</p>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Variaciones de Logo</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Logo Apilado/Vertical</strong></td>
+                                <td>Logotipo principal o formal. Funciona mejor cuando se ubica junto a otras marcas.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Logo Horizontal</strong></td>
+                                <td>Proporción más ancha, más simétrico y compacto. Ideal para escalas mayores donde el texto debe mantenerse legible.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Área de Reserva y Tamaños</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Área de seguridad:</strong> Espacio libre alrededor del logo para evitar tensión visual. Se usan las letras "A" y "U" como medida estándar.</li>
+                        <li><strong>Impresión:</strong> Ancho mínimo <strong>4.5 cm</strong> (con eslogan)</li>
+                        <li><strong>Digital:</strong> Ancho mínimo <strong>1.7 cm</strong> (con eslogan) o <strong>1 cm</strong> (solo logo)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Usos Prohibidos</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <p style="margin-bottom: 1rem; color: var(--text-light);">Para mantener la coherencia de la marca, <strong>NO</strong> se debe:</p>
+                    <div class="grid-2">
+                        <span class="tag prohibited">NO ESTIRAR</span>
+                        <span class="tag prohibited">NO REPOSICIONAR</span>
+                        <span class="tag prohibited">NO ROTAR</span>
+                        <span class="tag prohibited">NO CAMBIAR COLORES</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Aplicación sobre Fondos y Fotos</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Fondos Claros:</strong> Versión por defecto</li>
+                        <li><strong>Fondos Oscuros:</strong> Versión inversa (blanco total)</li>
+                        <li><strong>Sobre Fotografías:</strong> Logo en blanco al 100%. Si la foto es muy clara, aplicar superposición negra con <strong>40% de transparencia</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Portafolio de Productos y Tracks</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Producto / Track</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>PigVision™</strong></td>
+                                <td>Cámara inteligente para pesaje de cerdos. Debe llevar siempre el símbolo de marca comercial ™</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ambient Nodes</strong></td>
+                                <td>Sensores para el monitoreo del confort animal</td>
+                            </tr>
+                            <tr>
+                                <td><strong>SmartWeight</strong></td>
+                                <td>Cámara inteligente para corrales de engorde</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Insylo</strong></td>
+                                <td>Sistema de monitoreo de silos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Tracks de Asimetrix</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <p style="margin-bottom: 1rem; color: var(--text-light);">Los logos de los tracks son fragmentos del logo original reforzados por su nombre:</p>
+                    <div class="grid-2">
+                        <span class="badge">Go2Market</span>
+                        <span class="badge">Infraestructura</span>
+                        <span class="badge">SmartFarm</span>
+                        <span class="badge">Know</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Iconografía -->
+        <section id="iconografia" class="section">
+            <div class="section-header">
+                <h2>Iconografía</h2>
+                <p>Lenguaje visual funcional para complementar la interfaz de usuario.</p>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Principios de uso</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li>Siempre alineados con la retícula tipográfica y de espaciado</li>
+                        <li>Solo se usan cuando aportan valor semántico o funcional</li>
+                        <li>Nunca reemplazan contenido crítico (como textos obligatorios)</li>
+                        <li>Se ajustan al tamaño, color y peso del contexto en el que aparecen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Objetivos</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <ul>
+                        <li>Guiar la atención sin distraer</li>
+                        <li>Reforzar el significado de elementos clave</li>
+                        <li>Ahorrar espacio visual manteniendo la claridad</li>
+                        <li>Aumentar la comprensión sin necesidad de texto redundante</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Estados</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <div class="grid-2">
+                        <span class="badge">Default</span>
+                        <span class="badge">Hover</span>
+                        <span class="badge">Pressed</span>
+                        <span class="badge">Disabled</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Categorías</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <div class="grid-2">
+                        <span class="badge">Direccionales</span>
+                        <span class="badge">Conexiones</span>
+                        <span class="badge">Alertas y calendarios</span>
+                        <span class="badge">Archivos</span>
+                        <span class="badge">Usabilidad</span>
+                        <span class="badge">Industria</span>
+                        <span class="badge">Datos</span>
+                        <span class="badge">Sociales y comunicación</span>
+                        <span class="badge">Gestión</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Colores -->
+        <section id="colores" class="section">
+            <div class="section-header">
+                <h2>Colores</h2>
+                <p>Paleta de colores estructurada para modo claro y oscuro.</p>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Paleta Primaria</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <p style="margin-bottom: 1rem; color: var(--text-light);">Colores de firma para uso corporativo: textos, íconos y logotipos.</p>
+                    <div class="color-grid">
+                        <div class="color-swatch" style="background: #0E567B;">
+                            <span class="color-name">Azul aqua</span>
+                            <span class="color-hex">#0E567B</span>
+                        </div>
+                        <div class="color-swatch" style="background: #050B49;">
+                            <span class="color-name">Azul profundo</span>
+                            <span class="color-hex">#050B49</span>
+                        </div>
+                        <div class="color-swatch" style="background: #90C0E7;">
+                            <span class="color-name">Azul cielo</span>
+                            <span class="color-hex">#90C0E7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Paleta Complementaria</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <p style="margin-bottom: 1rem; color: var(--text-light);">Enriquecen el lenguaje visual. Usar únicamente para detalles.</p>
+                    <div class="color-grid">
+                        <div class="color-swatch" style="background: #4BA2FF;">
+                            <span class="color-name">Azul eléctrico</span>
+                            <span class="color-hex">#4BA2FF</span>
+                        </div>
+                        <div class="color-swatch" style="background: #00E3FF;">
+                            <span class="color-name">Aqua eléctrico</span>
+                            <span class="color-hex">#00E3FF</span>
+                        </div>
+                        <div class="color-swatch" style="background: #7EC6DE;">
+                            <span class="color-name">Aqua grisáseo</span>
+                            <span class="color-hex">#7EC6DE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Neutros</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <div class="color-grid">
+                        <div class="color-swatch" style="background: #E6E6E6;">
+                            <span class="color-name">Neutral</span>
+                            <span class="color-hex">#E6E6E6</span>
+                        </div>
+                        <div class="color-swatch" style="background: #D3DCDF;">
+                            <span class="color-name">Grey</span>
+                            <span class="color-hex">#D3DCDF</span>
+                        </div>
+                        <div class="color-swatch" style="background: #FF8389;">
+                            <span class="color-name">Blanco</span>
+                            <span class="color-hex">#FF8389</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Colores de Estado</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <p style="margin-bottom: 1rem; color: var(--text-light);">Exclusivamente para la aplicación. No permitidos para piezas gráficas.</p>
+                    <div class="color-grid">
+                        <div class="color-swatch" style="background: #4BA2FF;">
+                            <span class="color-name">Success</span>
+                            <span class="color-hex">#4BA2FF</span>
+                        </div>
+                        <div class="color-swatch" style="background: #C0062B;">
+                            <span class="color-name">Error</span>
+                            <span class="color-hex">#C0062B</span>
+                        </div>
+                        <div class="color-swatch" style="background: #FFD600;">
+                            <span class="color-name">Warning</span>
+                            <span class="color-hex">#FFD600</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Gradientes</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <p style="margin-bottom: 1rem; color: var(--text-light);">Para botones y fondos en el mundo digital.</p>
+                    <div class="gradient-grid">
+                        <div class="gradient-swatch" style="background: linear-gradient(135deg, #0E567B, #4BA2FF);">
+                            <span class="gradient-name">Azul aqua → Eléctrico</span>
+                        </div>
+                        <div class="gradient-swatch" style="background: linear-gradient(135deg, #050B49, #4BA2FF);">
+                            <span class="gradient-name">Azul profundo → Eléctrico</span>
+                        </div>
+                        <div class="gradient-swatch" style="background: linear-gradient(135deg, #7EC6DE, #00E3FF);">
+                            <span class="gradient-name">Aqua grisáseo → Eléctrico</span>
+                        </div>
+                        <div class="gradient-swatch" style="background: linear-gradient(135deg, #90C0E7, #4BA2FF);">
+                            <span class="gradient-name">Azul cielo → Eléctrico</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Componentes -->
+        <section id="componentes" class="section">
+            <div class="section-header">
+                <h2>Componentes</h2>
+                <p>Componentes de interfaz, patrones de interacción y recursos técnicos.</p>
+            </div>
+
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Componentes Disponibles</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">Los componentes detallados (botones, formularios, tarjetas, modales) se encuentran en desarrollo.</p>
+                    <div class="grid-2">
+                        <span class="badge">Botones</span>
+                        <span class="badge">Formularios</span>
+                        <span class="badge">Tarjetas</span>
+                        <span class="badge">Modales</span>
+                        <span class="badge">Tablas</span>
+                        <span class="badge">Navegación</span>
+                        <span class="badge">Inputs</span>
+                        <span class="badge">Selectores</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="version">V.01 - 2025</div>
+
+    <script>
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetId = item.dataset.section;
+                
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        document.querySelectorAll('.card-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const card = header.parentElement;
+                card.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>
