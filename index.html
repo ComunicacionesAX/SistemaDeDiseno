@@ -88,7 +88,7 @@
         .header {
             background: var(--primary);
             color: white;
-            padding: 1rem 2rem;
+            padding: 0.75rem 2rem;
             position: fixed;
             top: 0;
             left: 0;
@@ -99,9 +99,21 @@
             align-items: center;
         }
 
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-brand img {
+            height: 36px;
+            width: auto;
+        }
+
         .header h1 {
             font-size: 1.25rem;
             font-weight: 600;
+            margin: 0;
         }
 
         .header span {
@@ -434,7 +446,10 @@
 </head>
 <body>
     <header class="header">
-        <h1>Sistema de Diseño Asimetrix</h1>
+        <div class="header-brand">
+            <img src="Logo Asimetrix-07.png" alt="Asimetrix">
+            <h1>Sistema de diseño Asimetrix</h1>
+        </div>
         <span>V.01 - 2025</span>
     </header>
 
