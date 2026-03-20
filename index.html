@@ -284,15 +284,77 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .icon-gallery-grid {
-            display: inline-block;
-            min-width: 100%;
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+            padding: 1rem 0;
         }
 
-        .icon-gallery-grid svg {
-            width: 100%;
-            height: auto;
-            min-width: 600px;
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .icon-item:hover {
+            background: var(--bg-alt);
+            border-color: #7EC6DE;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .icon-item svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .icon-item.state-default svg {
+            stroke: #040939;
+        }
+
+        .icon-item.state-hover svg {
+            stroke: #7EC6DE;
+        }
+
+        .icon-item.state-pressed svg {
+            stroke: #040939;
+        }
+
+        .icon-item.state-disabled svg {
+            stroke: #C7C7C7;
+        }
+
+        .icon-name {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .category-header {
+            background: var(--bg-alt);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .category-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .category-header p {
+            font-size: 0.875rem;
+            color: var(--text-light);
         }
 
         table {
@@ -1133,9 +1195,117 @@
                 </div>
             </div>
 
+            <div class="card open">
+                <div class="card-header">
+                    <h3>Galería de iconos</h3>
+                    <span class="icon">▼</span>
+                </div>
+                <div class="card-content">
+                    <div class="category-header">
+                        <h4>Direccionales</h4>
+                        <p>Iconos de navegación y direccionamiento</p>
+                    </div>
+                    <div class="icons-grid">
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                            <span class="icon-name">chevron-left</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                            <span class="icon-name">chevron-right</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+                            <span class="icon-name">chevron-up</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                            <span class="icon-name">chevron-down</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m7-7l-7 7-7-7"/></svg>
+                            <span class="icon-name">arrow-down</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3l4 4-4 4M8 21l-4-4 4-4m12-6H4"/></svg>
+                            <span class="icon-name">arrow-right-left</span>
+                        </div>
+                    </div>
+
+                    <div class="category-header">
+                        <h4>Conexiones</h4>
+                        <p>Conectividad, redes y configuración</p>
+                    </div>
+                    <div class="icons-grid">
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+                            <span class="icon-name">link</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9m-6 0H3m18 10h-2m-6 0H3"/><circle cx="9" cy="7" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+                            <span class="icon-name">settings-2</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0"/><path d="M12 20h.01"/></svg>
+                            <span class="icon-name">wifi</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="5" width="22" height="14" rx="7" ry="7"/><circle cx="8" cy="12" r="3"/></svg>
+                            <span class="icon-name">toggle-left</span>
+                        </div>
+                    </div>
+
+                    <div class="category-header">
+                        <h4>Alertas y calendarios</h4>
+                        <p>Notificaciones y gestión de tiempo</p>
+                    </div>
+                    <div class="icons-grid">
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7"/><path d="M12 9v4l2 2"/></svg>
+                            <span class="icon-name">alarm-clock</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
+                            <span class="icon-name">bell</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                            <span class="icon-name">calendar</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4m0 4h.01"/></svg>
+                            <span class="icon-name">alert-triangle</span>
+                        </div>
+                    </div>
+
+                    <div class="category-header">
+                        <h4>Archivos</h4>
+                        <p>Gestión de archivos y carpetas</p>
+                    </div>
+                    <div class="icons-grid">
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+                            <span class="icon-name">file</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                            <span class="icon-name">folder</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 21v-8h8M7 1l10 10M7 11L3 7"/></svg>
+                            <span class="icon-name">upload</span>
+                        </div>
+                        <div class="icon-item state-default">
+                            <svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+                            <span class="icon-name">save</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
-<!-- Colores -->
+        <!-- Colores -->
         <section id="colores" class="section">
             <div class="section-header">
                 <h2>Colores</h2>
