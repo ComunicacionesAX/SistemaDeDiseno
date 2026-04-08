@@ -901,7 +901,7 @@ Usa esta plantilla para generar presentaciones...
                     </div>
                     <h4 style="margin-bottom: 0.5rem;">Prompt</h4>
                     <p style="opacity: 0.8; font-size: 14px; margin-bottom: 1.5rem;">Guía completa con instrucciones para usar con ChatGPT o Gemini.</p>
-                    <button onclick="showPromptModal()" class="cta-button" style="background: var(--accent); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 14px; border: none; cursor: pointer;">Ver prompt</button>
+                    <button id="promptBtn" class="cta-button" style="background: var(--accent); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 14px; border: none; cursor: pointer;">Ver prompt</button>
                 </div>
                 <div class="card card--dark animate animate-delay-2" style="text-align: center; padding: 2rem;">
                     <div class="feature-icon" style="margin: 0 auto 1rem;">
@@ -1059,6 +1059,10 @@ Usa esta plantilla para generar presentaciones...
             if (e.key === 'Escape') {
                 closePromptModal();
             }
+        });
+
+        document.getElementById('promptBtn').addEventListener('click', function() {
+            showPromptModal();
         });
     </script>
 
