@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación del sistema de diseño Asimetrix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #040939;
+            --primary-light: #0E567B;
+            --accent: #4BA2FF;
+            --accent-aqua: #00E3FF;
+            --accent-aqua-gray: #7EC6DE;
+            --text: #050B49;
+            --text-light: #4A4A68;
+            --text-inverse: #FFFFFF;
+            --bg: #FFFFFF;
+            --bg-alt: #F8F9FA;
+            --bg-neutral: #E6E6E6;
+            --border: #D3DCDF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.6px;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: 56px; }
+        h2 { font-size: 44px; }
+        h3 { font-size: 32px; }
+        h4 { font-size: 24px; }
+        h5 { font-size: 20px; }
+        h6 { font-size: 18px; }
+
+        .slide {
+            min-height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 2rem;
+            right: 3rem;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            opacity: 0.6;
+        }
+
+        .navigation {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        .nav-dot:hover {
+            background: var(--accent);
+        }
+
+        .keyboard-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            font-size: 12px;
+            color: var(--text-light);
+            opacity: 0.5;
+            z-index: 100;
+        }
+
+        .keyboard-hint kbd {
+            background: var(--bg-alt);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+        }
+
+        .slide--dark {
+            background: var(--primary);
+            color: white;
+        }
+
+        .slide--dark .slide-number {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .slide--dark h2,
+        .slide--dark h3 {
+            color: white;
+        }
+
+        .slide--accent {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .slide--light {
+            background: var(--bg);
+        }
+
+        .slide--gray {
+            background: var(--bg-alt);
+        }
+
+        .slide--title {
+            background: var(--primary);
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide--title .slide-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-aqua) 100%);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon svg {
+            width: 50px;
+            height: 50px;
+            stroke: white;
+        }
+
+        .slide--title h1 {
+            font-size: 64px;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: white !important;
+        }
+
+        .slide--title .subtitle {
+            font-size: 24px;
+            opacity: 0.85;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            color: rgba(255,255,255,0.9) !important;
+        }
+
+        .slide--title .meta {
+            font-size: 16px;
+            opacity: 0.6;
+            color: rgba(255,255,255,0.7) !important;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+        }
+
+        .card--dark {
+            background: var(--primary);
+            color: white;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .kpi-card {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .kpi-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .slide--dark .kpi-value {
+            color: white;
+        }
+
+        .kpi-label {
+            font-size: 14px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .slide--dark .kpi-label {
+            opacity: 0.8;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card {
+            padding: 1.5rem;
+            height: 100%;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-aqua) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+        }
+
+        .feature-card h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .check-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .check-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            font-size: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .check-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            background: var(--accent);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge--outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .code-block {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'SF Mono', 'Roboto Mono', monospace;
+            font-size: 14px;
+            color: #a0a0a0;
+            overflow-x: auto;
+        }
+
+        .code-block .keyword { color: #ff79c6; }
+        .code-block .string { color: #f1fa8c; }
+        .code-block .comment { color: #6272a4; }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .comparison-item {
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .comparison-item.positive {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .comparison-item.negative {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+        }
+
+        .comparison-item h4 {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comparison-item ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comparison-item li {
+            padding: 0.4rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .comparison-item.positive li { color: rgba(255,255,255,0.9); }
+        .comparison-item.negative li { color: var(--text-light); }
+
+        .comparison-item li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .comparison-item.positive li::before { background: white; }
+        .comparison-item.negative li::before { background: var(--error); }
+
+        .cta-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            margin-bottom: 1rem;
+        }
+
+        .cta-content p {
+            font-size: 20px;
+            opacity: 0.85;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: white;
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-aqua) 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .highlight-box h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box p {
+            opacity: 0.9;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .animate-delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .animate-delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .animate-delay-4 { animation-delay: 0.4s; opacity: 0; }
+        .animate-delay-5 { animation-delay: 0.5s; opacity: 0; }
+
+        @media (max-width: 1024px) {
+            .slide { padding: 3rem 4rem; }
+            h1 { font-size: 44px; }
+            h2 { font-size: 36px; }
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .two-col { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .slide { padding: 2rem; }
+            h1 { font-size: 36px; }
+            h2 { font-size: 28px; }
+            h3 { font-size: 22px; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .navigation { display: none; }
+        }
+
+        @media print {
+            .slide { page-break-after: always; min-height: 100vh; }
+            .navigation, .keyboard-hint { display: none; }
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg);
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-content h1 { font-size: 24px; margin-bottom: 1rem; }
+        .modal-content h2 { font-size: 20px; margin: 1.5rem 0 0.5rem; }
+        .modal-content h3 { font-size: 16px; margin: 1rem 0 0.5rem; }
+        .modal-content p { font-size: 14px; color: var(--text-light); margin-bottom: 0.5rem; }
+        .modal-content pre {
+            background: #1a1a2e;
+            color: #a0a0a0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .modal-content code {
+            font-family: 'Roboto Mono', monospace;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navigation" aria-label="Navegación de slides"></nav>
+    <div class="keyboard-hint"><kbd>↑</kbd> <kbd>↓</kbd> navegar · <kbd>Esc</kbd> vista completa</div>
+
+    <!-- SLIDE 1: PORTADA -->
+    <section class="slide slide--title" id="slide-1">
+        <div class="slide-content">
+            <div class="logo-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <h1 style="color: white;">Sistema de diseño Asimetrix</h1>
+            <p style="color: rgba(255,255,255,0.9); font-size: 24px; margin-bottom: 2rem;">Guía de uso de IA para crear presentaciones</p>
+            <p style="color: rgba(255,255,255,0.7); font-size: 16px;">Equipo de comunicaciones · 2025</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.6);">1</span>
+    </section>
+
+    <!-- SLIDE 2: QUÉ ES -->
+    <section class="slide slide--light" id="slide-2">
+        <div class="slide-content">
+            <span class="badge">Introducción</span>
+            <h2 class="animate">Qué es el sistema de diseño</h2>
+            
+            <div class="grid-3" style="margin-top: 2rem;">
+                <div class="card feature-card animate animate-delay-1">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    </div>
+                    <h4>Guía visual</h4>
+                    <p>Estándares de tipografía, colores y layout para mantener coherencia en todas las comunicaciones.</p>
+                </div>
+                <div class="card feature-card animate animate-delay-2">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h4>Biblioteca de componentes</h4>
+                    <p>Iconos, plantillas y elementos gráficos listos para usar en tus presentaciones.</p>
+                </div>
+                <div class="card feature-card animate animate-delay-3">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h4>Asistente de IA</h4>
+                    <p>Una herramienta que te ayuda a crear presentaciones usando este sistema de diseño.</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">2</span>
+    </section>
+
+    <!-- SLIDE 3: POR QUÉ USARLO -->
+    <section class="slide slide--accent" id="slide-3">
+        <div class="slide-content">
+            <span class="badge" style="background: white; color: var(--primary);">Ventajas</span>
+            <h2 class="animate">Por qué usar este sistema</h2>
+            
+            <div class="grid-2" style="margin-top: 2rem;">
+                <div class="highlight-box animate animate-delay-1">
+                    <h3>Consistencia</h3>
+                    <p>Todas las presentaciones tendrán el mismo estilo visual, fortaleciendo nuestra identidad de marca.</p>
+                </div>
+                <div class="highlight-box animate animate-delay-2">
+                    <h3>Ahorro de tiempo</h3>
+                    <p>No tienes que diseñar desde cero. Usa las plantillas y enfócate en el contenido.</p>
+                </div>
+                <div class="highlight-box animate animate-delay-3">
+                    <h3>Profesionalismo</h3>
+                    <p>Resultados con calidad de agencia, sin necesidad de ser diseñador experto.</p>
+                </div>
+                <div class="highlight-box animate animate-delay-4">
+                    <h3>Fácil de usar</h3>
+                    <p>Solo sigue los pasos y la IA hace el trabajo pesado por ti.</p>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">3</span>
+    </section>
+
+    <!-- SLIDE 4: CÓMO USAR - PASO 1 -->
+    <section class="slide slide--gray" id="slide-4">
+        <div class="slide-content">
+            <span class="badge">Cómo usarlo</span>
+            <h2 class="animate">Paso 1: copia el prompt</h2>
+            
+            <div class="two-col" style="margin-top: 2rem;">
+                <div class="animate">
+                    <p style="font-size: 18px; color: var(--text-light); margin-bottom: 1.5rem;">
+                        En la carpeta del proyecto encontrarás un archivo llamado <strong>PROMPT_presentaciones.md</strong>. Ábrelo y copia todo el contenido.
+                    </p>
+                    <ul class="check-list">
+                        <li>Abre el archivo en cualquier editor de texto</li>
+                        <li>Selecciona todo el contenido (Ctrl+A o Cmd+A)</li>
+                        <li>Copia (Ctrl+C o Cmd+C)</li>
+                    </ul>
+                </div>
+                <div class="animate animate-delay-1">
+                    <div class="card" style="background: var(--bg-alt); border: 1px solid var(--border);">
+                        <h4>Ubicación del archivo</h4>
+                        <div class="code-block">
+<span class="comment"># Plantilla de Prompt para Presentaciones</span>
+
+<span class="keyword">##</span> Sistema de Diseño Asimetrix
+
+Usa esta plantilla para generar presentaciones...
+
+... (copia todo el contenido)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">4</span>
+    </section>
+
+    <!-- SLIDE 5: CÓMO USAR - PASO 2 -->
+    <section class="slide slide--light" id="slide-5">
+        <div class="slide-content">
+            <span class="badge">Cómo usarlo</span>
+            <h2 class="animate">Paso 2: personaliza el prompt</h2>
+            
+            <div class="grid-2" style="margin-top: 2rem;">
+                <div class="animate">
+                    <div class="card">
+                        <div class="step-number" style="width: 36px; height: 36px; font-size: 18px; margin-bottom: 0.75rem;">1</div>
+                        <h4>Pega en Gemini, Claude o tu asistente</h4>
+                        <p style="color: var(--text-light); font-size: 14px;">Puedes usarlo en ChatGPT, pero no lo recomendamos por su baja eficiencia en imágenes.</p>
+                    </div>
+                </div>
+                <div class="animate animate-delay-1">
+                    <div class="card">
+                        <div class="step-number" style="width: 36px; height: 36px; font-size: 18px; margin-bottom: 0.75rem;">2</div>
+                        <h4>Completa los datos</h4>
+                        <p style="color: var(--text-light); font-size: 14px;">Edita las secciones marcadas con [ corchetes ] con tu información específica.</p>
+                    </div>
+                </div>
+                <div class="animate animate-delay-2">
+                    <div class="card">
+                        <div class="step-number" style="width: 36px; height: 36px; font-size: 18px; margin-bottom: 0.75rem;">3</div>
+                        <h4>Agrega tus cifras</h4>
+                        <p style="color: var(--text-light); font-size: 14px;">Incluye los KPIs, porcentajes y datos que quieres mostrar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">5</span>
+    </section>
+
+    <!-- SLIDE 6: CÓMO USAR - EJEMPLO -->
+    <section class="slide slide--gray" id="slide-6">
+        <div class="slide-content">
+            <span class="badge">Cómo usarlo</span>
+            <h2 class="animate">Ejemplo de prompt completado</h2>
+            
+            <div style="margin-top: 2rem;">
+                <div class="code-block animate" style="max-height: 400px; overflow-y: auto;">
+<span class="comment"># Prompt completado ejemplo:</span>
+
+<span class="keyword">Eres</span> un diseñador gráfico experto en presentaciones 
+<span class="keyword">corporativas</span> premium. Crea una presentación HTML completa...
+
+<span class="keyword">##</span> CONFIGURACIÓN VISUAL
+- Color primario: <span class="string">#040939</span>
+- Color secundario: <span class="string">#0E567B</span>  
+- Color de acento: <span class="string">#4BA2FF</span>
+- Estilo: <span class="string">corporativo premium</span>
+
+<span class="keyword">##</span> CONTEXTO
+- Tema: <span class="string">Resultados Q4 2024</span>
+- Audiencia: <span class="string">Junta directiva</span>
+- Objetivo: <span class="string">Presentar resultados financieros</span>
+
+<span class="keyword">##</span> DATOS A INCLUIR
+- 85% de.meta objetivo alcanzado
+- $2.3M en ingresos
+- +15% vs. año anterior
+- 3 nuevos productos lanzados
+
+<span class="keyword">##</span> MENSAJES CLAVE
+- Crecimiento sostenido
+- Eficiencia operativa
+- Expansión de mercado
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">6</span>
+    </section>
+
+    <!-- SLIDE 7: CÓMO USAR - PASO 3 -->
+    <section class="slide slide--light" id="slide-7">
+        <div class="slide-content">
+            <span class="badge">Cómo usarlo</span>
+            <h2 class="animate">Paso 3: obtén y guarda el HTML</h2>
+            
+            <div class="grid-2" style="margin-top: 2rem;">
+                <div class="animate">
+                    <ul class="check-list">
+                        <li>La IA generará el código HTML completo</li>
+                        <li>Copiará todo el código mostrado</li>
+                        <li>Crear un archivo nuevo en tu computadora</li>
+                        <li>Nombrarlo como "presentacion.html"</li>
+                        <li>Pegar el código y guardar</li>
+                    </ul>
+                </div>
+                <div class="animate animate-delay-1">
+                    <div class="card" style="text-align: center;">
+                        <div class="feature-icon" style="margin: 0 auto 1rem;">
+                            <svg fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        </div>
+                        <h4>Guardar archivo</h4>
+                        <p style="color: var(--text-light); font-size: 14px;">Usa "Guardar como..." y selecciona "Todos los archivos" para crear el .html</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">7</span>
+    </section>
+
+    <!-- SLIDE 8: CÓMO USAR - PASO 4 -->
+    <section class="slide slide--gray" id="slide-8">
+        <div class="slide-content">
+            <span class="badge">Cómo usarlo</span>
+            <h2 class="animate">Paso 4: presenta</h2>
+            
+            <div class="grid-2" style="margin-top: 2rem;">
+                <div class="animate">
+                    <div class="card">
+                        <h4>Abre en tu navegador</h4>
+                        <ul class="check-list">
+                            <li>Haz doble clic en el archivo .html</li>
+                            <li>Se abrirá en tu navegador predeterminado</li>
+                            <li>Presiona F11 para pantalla completa</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="animate animate-delay-1">
+                    <div class="card">
+                        <h4>Navegación</h4>
+                        <ul class="check-list">
+                            <li>Usa las flechas ↑ ↓ para avanzar</li>
+                            <li>O usa el scroll del mouse</li>
+                            <li>Los puntos amarillos son atajos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box animate animate-delay-2" style="margin-top: 2rem; background: var(--primary);">
+                <h3>Tip</h3>
+                <p>Usa la tecla <strong>Esc</strong> para salir del modo pantalla completa en cualquier momento.</p>
+            </div>
+        </div>
+        <span class="slide-number">8</span>
+    </section>
+
+    <!-- SLIDE 9: COMPARATIVA -->
+    <section class="slide slide--light" id="slide-9">
+        <div class="slide-content">
+            <span class="badge">Antes vs. después</span>
+            <h2 class="animate">La diferencia con nuestro sistema</h2>
+            
+            <div class="comparison" style="margin-top: 2rem;">
+                <div class="comparison-item negative animate animate-delay-1">
+                    <h4>
+                        <svg width="20" height="20" fill="none" stroke="#C0062B" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                        Sin sistema
+                    </h4>
+                    <ul>
+                        <li>Cada presentación se ve diferente</li>
+                        <li>Tiempo buscando plantillas</li>
+                        <li>Resultados inconsistentes</li>
+                        <li>Se necesita diseñador</li>
+                        <li>Colores y fuentes al azar</li>
+                    </ul>
+                </div>
+                <div class="comparison-item positive animate animate-delay-2">
+                    <h4>
+                        <svg width="20" height="20" fill="none" stroke="white" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+                        Con nuestro sistema
+                    </h4>
+                    <ul>
+                        <li>Diseño coherente y profesional</li>
+                        <li>En minutos tienes tu presentación</li>
+                        <li>Resultados garantizados</li>
+                        <li>Tú mismo lo puedes hacer</li>
+                        <li>Todo siguiendo los estándares</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">9</span>
+    </section>
+
+    <!-- SLIDE 10: RECURSOS DISPONIBLES -->
+    <section class="slide slide--dark" id="slide-10">
+        <div class="slide-content">
+            <span class="badge" style="background: var(--accent);">recursos</span>
+            <h2 class="animate">Tienes disponible</h2>
+            
+            <div class="grid-2" style="margin-top: 2rem;">
+                <div class="card card--dark animate animate-delay-1" style="text-align: center; padding: 2rem;">
+                    <div class="feature-icon" style="margin: 0 auto 1rem;">
+                        <svg fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    </div>
+                    <h4 style="margin-bottom: 0.5rem;">Prompt</h4>
+                    <p style="opacity: 0.8; font-size: 14px; margin-bottom: 1.5rem;">Guía completa con instrucciones para usar con ChatGPT o Gemini.</p>
+                    <button onclick="showPromptModal()" class="cta-button" style="background: var(--accent); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 14px; border: none; cursor: pointer;">Ver prompt</button>
+                </div>
+                <div class="card card--dark animate animate-delay-2" style="text-align: center; padding: 2rem;">
+                    <div class="feature-icon" style="margin: 0 auto 1rem;">
+                        <svg fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h4>Sistema de diseño</h4>
+                    <p style="opacity: 0.8; font-size: 14px; margin-bottom: 1.5rem;">El sistema de diseño completo con todos los componentes, colores y tipografía.</p>
+                    <a href="https://sistema-de-diseno-seven.vercel.app/" target="_blank" class="cta-button" style="background: var(--accent); color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-size: 14px;">Ver sistema</a>
+                </div>
+            </div>
+        </div>
+        <span class="slide-number">10</span>
+    </section>
+
+    <!-- SLIDE 11: RECURSOS VISUALES -->
+    <section class="slide slide--gray" id="slide-11">
+        <div class="slide-content">
+            <span class="badge">Recursos</span>
+            <h2 class="animate">Ahí podrás ver:</h2>
+            
+            <div class="grid-2" style="margin-top: 2rem; gap: 3rem;">
+                <div>
+                    <h4>Iconografía</h4>
+                    <div class="grid-4" style="margin-bottom: 1rem;">
+                        <div class="card" style="padding: 0.75rem; text-align: center;">
+                            <svg width="24" height="24" fill="none" stroke="var(--text-light)" stroke-width="2" style="margin-bottom: 0.25rem;"><path d="M15 18l-6-6 6-6"/></svg>
+                            <span style="font-size: 10px;">direccional</span>
+                        </div>
+                        <div class="card" style="padding: 0.75rem; text-align: center;">
+                            <svg width="24" height="24" fill="none" stroke="var(--text-light)" stroke-width="2" style="margin-bottom: 0.25rem;"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/></svg>
+                            <span style="font-size: 10px;">conexión</span>
+                        </div>
+                        <div class="card" style="padding: 0.75rem; text-align: center;">
+                            <svg width="24" height="24" fill="none" stroke="var(--text-light)" stroke-width="2" style="margin-bottom: 0.25rem;"><circle cx="12" cy="13" r="7"/><path d="M12 9v4l2 2"/></svg>
+                            <span style="font-size: 10px;">alerta</span>
+                        </div>
+                        <div class="card" style="padding: 0.75rem; text-align: center;">
+                            <svg width="24" height="24" fill="none" stroke="var(--text-light)" stroke-width="2" style="margin-bottom: 0.25rem;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+                            <span style="font-size: 10px;">archivo</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 13px; color: var(--text-light);">4 categorías de iconos para tus presentaciones.</p>
+                </div>
+                
+                <div>
+                    <h4>Colores</h4>
+                    <div class="grid-4" style="margin-bottom: 1rem;">
+                        <div style="background: #040939; height: 40px; border-radius: 6px;"></div>
+                        <div style="background: #0E567B; height: 40px; border-radius: 6px;"></div>
+                        <div style="background: #4BA2FF; height: 40px; border-radius: 6px;"></div>
+                        <div style="background: #00E3FF; height: 40px; border-radius: 6px;"></div>
+                    </div>
+                    <p style="font-size: 13px; color: var(--text-light);">Paleta oficial: azul profundo, azul aqua, azul eléctrico, aqua eléctrico.</p>
+                </div>
+            </div>
+            
+            <p style="margin-top: 2rem; font-size: 14px; color: var(--text-light); text-align: center;">
+                Consulta el sistema de diseño para ver la galería completa.
+            </p>
+        </div>
+        <span class="slide-number">11</span>
+    </section>
+
+    <!-- SLIDE 12: PREGUNTAS -->
+    <section class="slide slide--title" id="slide-12">
+        <div class="slide-content" style="text-align: center;">
+            <div class="logo-icon" style="margin-bottom: 1.5rem;">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h1 style="color: white;">¿Preguntas?</h1>
+            <p style="color: rgba(255,255,255,0.9); font-size: 24px; margin-bottom: 2rem;">Estamos para ayudarte</p>
+            <p style="color: rgba(255,255,255,0.7); font-size: 16px;">Equipo de comunicaciones Asimetrix</p>
+        </div>
+        <span class="slide-number" style="color: rgba(255,255,255,0.6);">12</span>
+    </section>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const nav = document.querySelector('.navigation');
+        let currentSlide = 0;
+
+        slides.forEach((slide, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'nav-dot' + (index === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goToSlide(index));
+            nav.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.nav-dot');
+
+        function goToSlide(index) {
+            if (index >= 0 && index < slides.length) {
+                slides[index].scrollIntoView({ behavior: 'smooth' });
+                currentSlide = index;
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                const scrollPos = window.scrollY + window.innerHeight / 2;
+                slides.forEach((slide, index) => {
+                    const slideTop = slide.offsetTop;
+                    const slideHeight = slide.offsetHeight;
+                    if (scrollPos >= slideTop && scrollPos < slideTop + slideHeight) {
+                        currentSlide = index;
+                        updateNavigation();
+                    }
+                });
+            }, 50);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                goToSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                e.preventDefault();
+                goToSlide(currentSlide - 1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                goToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                goToSlide(slides.length - 1);
+            }
+        });
+
+        updateNavigation();
+
+        function showPromptModal() {
+            document.getElementById('promptModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePromptModal(event) {
+            if (!event || event.target === document.getElementById('promptModal') || event.target.classList.contains('modal-close')) {
+                document.getElementById('promptModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePromptModal();
+            }
+        });
+    </script>
+
+    <div id="promptModal" class="modal-overlay" onclick="closePromptModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closePromptModal()">&times;</button>
+            <h1>Plantilla de prompt para presentaciones con IA</h1>
+            <h2>Sistema de diseño Asimetrix</h2>
+            <p>Usa esta plantilla para generar presentaciones HTML profesionales usando el sistema de diseño Asimetrix. El resultado será un archivo HTML único, visualmente impactante, listo para presentar.</p>
+            
+            <h2>Parte 1: configuración del diseño</h2>
+            <h3>Paleta de colores Asimetrix</h3>
+            <p>Copia y pega estos valores en tu prompt:</p>
+            <pre><code>COLOR PRINCIPAL (Primario): #040939 (Azul profundo)
+COLOR SECUNDARIO: #0E567B (Azul aqua)
+COLOR DE FONDO: #FFFFFF (Blanco) o #F8F9FA (Gris claro)
+COLOR DE TEXTO PRINCIPAL: #050B49
+COLOR DE APOYO/ACENTO: #4BA2FF (Azul eléctrico)
+COLOR AQUA ELÉCTRICO: #00E3FF
+COLOR AQUA GRISÁSEO: #7EC6DE
+COLOR DE ÉXITO: #4BA2FF
+COLOR DE ERROR: #C0062B
+COLOR DE ADVERTENCIA: #FFD600</code></pre>
+            
+            <h3>Tipografía</h3>
+            <pre><code>Fuente principal: Roboto (Google fonts)
+- Headings: Roboto Bold (700)
+- Body: Roboto Regular (400)
+- Tamaños: H1=56px, H2=44px, H3=32px, Body=16px</code></pre>
+            
+            <h3>Iconografía</h3>
+            <pre><code>Usa iconos estilo línea (stroke) con:
+- Ancho de trazo: 2px
+- Color: #040939 (default), #7EC6DE (hover)
+- Categorías: Direccionales, Conexiones, Alertas, Archivos</code></pre>
+            
+            <h2>Parte 2: estructura del prompt</h2>
+            <p>Copia y completa este prompt para usar con ChatGPT o Gemini:</p>
+            
+            <h3>PROMPT:</h3>
+            <pre><code>Eres un diseñador gráfico experto en presentaciones corporativas premium. Crea una presentación HTML completa usando el sistema de diseño Asimetrix.
+
+## Configuración visual
+- Color primario: #040939
+- Color secundario: #0E567B  
+- Color de acento: #4BA2FF
+- Color de fondo: [BLANCO/GRIS CLARO/OSCURO]
+- Fuente: Roboto (Google fonts)
+- Estilo: Apple Keynote (siempre)
+
+## Contexto de la presentación
+- Tema: [TEMA PRINCIPAL]
+- Subtítulo: [SUBTÍTULO IMPACTANTE]
+- Audiencia: [Junta directiva/Clientes/Inversionistas/Equipo/etc.]
+- Objetivo: [Vender/Presentar resultados/Persuadir/Explicar]
+- Tono: [Persuasivo/Ejecutivo/Técnico/Inspirador]
+
+## Estructura narrativa
+1. Portada: Título + subtítulo + fecha/presentador
+2. Contexto: [Contexto del tema]
+3. Cifras clave: [3-4 KPIs con valores]
+4. Problema: [El desafío actual]
+5. Limitación: [Lo que no podemos hacer hoy]
+6. Oportunidad: [La oportunidad identificada]
+7. Solución: [La propuesta de valor]
+8. Cómo funciona: [Pasos o proceso]
+9. Comparativa: [Nosotros vs. competencia]
+10. Modelo económico: [Precios o costos]
+11. Beneficios: [Resultados esperados]
+12. Cierre: [Llamado a la acción]
+
+## Datos a incluir
+[CIFRAS ESPECÍFICAS:]
+- KPI 1: [valor] - [descripción]
+- KPI 2: [valor] - [descripción]
+- KPI 3: [valor] - [descripción]
+- [Otros datos relevantes]
+
+Mensajes clave:
+- [Mensaje 1 importante]
+- [Mensaje 2 importante]
+- [Mensaje 3 importante]
+
+## Requisitos técnicos
+1. Un único archivo HTML con CSS y JS embebidos
+2. Cada slide = 100vh (pantalla completa)
+3. Navegación con puntos laterales (bullets)
+4. Avanzar con scroll y teclas ←↑↓→
+5. Diseño responsive (16:9)
+6. Animaciones suaves (fadeInUp)
+7. KPI cards visuales y proporcionados
+8. Comparativas claras en 3 segundos
+9. No deformar tipografía ni imágenes
+10. Tarjetas con hover effect
+
+## Salida esperada
+- Archivo HTML completo
+- Listo para guardar como .html
+- Sin explicaciones innecesarias
+- Contenido completo construido
+- Diseño profesional terminado</code></pre>
+            
+            <h2>Notas importantes</h2>
+            <h3>1. Capitalización en español:</h3>
+            <p>Sigue estas reglas estrictamente:</p>
+            <ul>
+                <li>Usa SIEMPRE Sentence Case (solo mayúscula inicial de cada oración)</li>
+                <li>Evita Title Case (donde cada palabra inicia con mayúscula)</li>
+                <li>Ejemplo correcto: "Resultados del cuarto trimestre 2024"</li>
+                <li>Ejemplo incorrecto: "Resultados Del Cuarto Trimestre 2024"</li>
+                <li>Mayúscula solo al inicio de texto, después de punto, y después de ¡! o ¿?</li>
+                <li>Nombres propios: personas, lugares, instituciones, marcas (María, Madrid, Universidad Nacional, Coca-Cola)</li>
+                <li>Primera palabra de títulos de obras (Cien años de soledad)</li>
+                <li>NO usan mayúscula: días (lunes), meses (abril), estaciones (verano), gentilicios (mexicano), cargos (rey, presidente)</li>
+                <li>Siglas: todo en mayúsculas (ONU, RAE)</li>
+            </ul>
+            
+            <h3>2. Revisión obligatoria:</h3>
+            <p>Antes de generar el contenido, revisa 3 veces cada palabra para evitar errores de capitalización. Asegúrate de que:</p>
+            <ul>
+                <li>Todos los títulos usen Sentence Case</li>
+                <li>No haya Title Case en ningún encabezado</li>
+                <li>Los nombres propios estén correctamente capitalizados</li>
+                <li>Los acrónimos estén en mayúsculas (si corresponde)</li>
+            </ul>
+            
+            <h3>3. Otros requisitos:</h3>
+            <ul>
+                <li>KPI cards: Usar valores proporcionados, no exagerar tamaños</li>
+                <li>Imágenes: Si no tienes, usar placeholders con gradientes o iconos SVG</li>
+                <li>Animaciones: Incluir `animate` y `animate-delay-1`, `animate-delay-2`, etc.</li>
+                <li>Navegación: Puntos laterales + teclado + scroll funcionan automáticamente</li>
+            </ul>
+            
+            <p style="margin-top: 1.5rem; font-size: 12px; color: var(--text-light);">Plantilla creada para el sistema de diseño Asimetrix</p>
+        </div>
+    </div>
+</body>
+</html>
